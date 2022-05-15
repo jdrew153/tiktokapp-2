@@ -91,6 +91,7 @@
     height: 100vh;
     width: 300px;
     position: fixed;
+    overflow: auto;
 }
 .page-navigator-container {
     margin-top: 20px;

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom"
 
 const Login = () => {
     const [username, setUserName] = useState("")
+    const [profile_pic_url, setprofile_pic_url] = useState("")
+    const [video, setVideo] = useState("")
     const [firstname, setFirstName] = useState("")
     const [email, setEmail] = useState("")
     const [day, setDay] = useState("")
@@ -12,6 +14,7 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const [confirmpassword, setConfirmPassword] = useState("")
     const [error, setError] =useState(null)
+    const [loggedIn, seLoggedIn] = useState(false)
 
     let navigate = useNavigate()
 
@@ -24,11 +27,13 @@ const Login = () => {
                 setError("passwords don't match")
                 console.log(error)
             } else {
-                const response = await axios.post('http://localhost:8000/signup', { email, password, username})
+                const response = await axios.post('http://localhost:8000/signup', { email, password, username, profile_pic_url, video})
                 const success = response.status == 201
+                seLoggedIn(true)
                 console.log("success", response.data)
-                if (success) {
+                if ((success)  &&  (seLoggedIn)) {
                     navigate ('/feed')
+
                 }
 
                 window.location.reload()
@@ -67,6 +72,23 @@ const Login = () => {
                     placeholder="Email"
                     required={true}
                     onChange={(e) =>setEmail(e.target.value)}/>
+                <h3>
+                    Profile Picture
+                </h3>
+                    <input
+                        className="profile-picture-input"
+                        placeholder="type in pic url"
+                        required={true}
+                        onChange={(e) =>setprofile_pic_url(e.target.value)}/>
+                <h3>
+                    First Video
+                </h3>
+                <input
+                    className="profile-picture-video"
+                    placeholder="first video url"
+                    required={true}
+                    onChange={(e) => setVideo(e.target.value)}/>
+
                 <h3>
                     Birthday
                 </h3>

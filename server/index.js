@@ -30,7 +30,7 @@ app.get("/users", async (req,res) => {
 
 app.post('/signup', async (req,res) => {
     const client = new MongoClient(uri)
-    const { username, email, password}  = req.body
+    const { username, email, password, profile_pic_url, video}  = req.body
     const generatedUserId = uuidv4()
     const hashedPassword = await bcrypt.hash(password, 10)
     try {
@@ -49,7 +49,9 @@ app.post('/signup', async (req,res) => {
             user_id: generatedUserId,
             email: sanitizedEmail,
             hashed_password: hashedPassword,
-            username
+            username,
+            profile_pic_url,
+            video
 
         }
         const insertedUSer = await users.insertOne(data)
