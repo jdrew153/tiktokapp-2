@@ -28,6 +28,26 @@ app.get("/users", async (req,res) => {
     }
 })
 
+app.get("/specific_user:username", async (req, res) => {
+    const user = req.params.username
+    const client = new MongoClient(uri)
+    try {
+        await client.connect()
+        const database = client.db("app-data")
+        const users = database.collection("users")
+        const userExist = await users.findOne({  username: user } )
+
+        if (userExist) {
+            res.status(201).send("success")
+        } else {
+            res.status(409).send("user not found, create an account")
+            console.log(user)
+        }
+    } finally {
+        await client.close()
+    }
+})
+
 app.post('/signup', async (req,res) => {
     const client = new MongoClient(uri)
     const { username, email, password, profile_pic_url, video}  = req.body
@@ -52,7 +72,6 @@ app.post('/signup', async (req,res) => {
             username,
             profile_pic_url,
             video
-
         }
         const insertedUSer = await users.insertOne(data)
 

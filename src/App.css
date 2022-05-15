@@ -338,14 +338,92 @@
     height: 300px;
 }
 
-/*login/account-signup-page*/
+/*account-signup-page*/
 
 .sign-up-form {
     position: relative;
 }
-.sign-up-form-background-image {
-    position: absolute;
-    z-index: -1;
-    width: 100vw;
+
+/* login page */
+.main-auth-modal-container {
     height: 400px;
+    width: 400px;
+    background-color: #FFFF;
+    position: absolute;
+    margin-top: 100px;
+    margin-left: 1100px;
+    border-radius: 5px;
+    display: flex;
+
+}
+.auth-container {
+    background-color: #F1F1F1;
+    height: 50vh;
+    position: relative;
+}
+.email-input {
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 50px;
+    width: 95%;
+    background-color: #F1F1F1;
+    border: hidden;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+.password-input {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 50px;
+    width: 95%;
+    background-color: #F1F1F1;
+    border: hidden;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+.form-button {
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 50px;
+    width: 98%;
+    background-color: #EF2950;
+    border-radius: 5px;
+    border: hidden;
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bolder;
+}
+.form-button:hover {
+    background-color: #f46a85;
+    cursor: pointer;
+}
+.forgotten-password-link {
+    text-decoration: none;
+    font-size: 14px;
+}
+.forgotten-password-link-container {
+    margin-left: 140px;
+    margin-top: 20px;
+}
+.create-account-button-container {
+    margin-top: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
+    border-top: 2px solid #F1F1F1;
+}
+.create-account-button {
+    margin-top: 20px;
+    margin-left: 100px;
+    height: 50px;
+    width: 48%;
+    border: hidden;
+    border-radius: 5px;
+    background-color: #19afff;
+    color: #F1F1F1;
+}
+.create-account-button:hover {
+    cursor: pointer;
 }
