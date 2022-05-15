@@ -71,7 +71,8 @@ app.post('/signup', async (req,res) => {
             hashed_password: hashedPassword,
             username,
             profile_pic_url,
-            video
+            video,
+            videos:  []
         }
         const insertedUSer = await users.insertOne(data)
 

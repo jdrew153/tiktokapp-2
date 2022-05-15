@@ -1,16 +1,22 @@
-import { useState } from "react"
+import {useEffect, useState} from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
-import { useCookies } from "react-cookie";
+import {useCookies, withCookies} from "react-cookie";
 
 const Authmodal =  () => {
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
     const [isLoggedIn, setisLoggedIn] = useState(false)
     const [error, setError] = useState(null)
-    const [cookies, setCookie, removeCookie] =useCookies(['user'])
+    const [cookies, setCookie, removeCookie] =useCookies(null)
 
     let navigator = useNavigate()
+
+    useEffect(() => {
+        removeCookie('username')
+    }, [])
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -20,7 +26,7 @@ const Authmodal =  () => {
             console.log(response.data)
             if (response.status === 201) {
                 setisLoggedIn(true)
-                setCookie(email)
+                setCookie('username',email, {path: "/"})
                 navigator('/feed')
             } else {
                 setError("account not found, try again or create an account")
@@ -71,4 +77,7 @@ const Authmodal =  () => {
     )
 }
 
-export default Authmodal
+const AuthmodalCookies = withCookies(Authmodal)
+
+
+export default AuthmodalCookies

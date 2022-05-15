@@ -1,6 +1,13 @@
 import Authmodal from "../components/authmodal";
+import {useCookies} from "react-cookie";
+import {useEffect} from "react";
 
-const Createaccount = () => {
+const Login = () => {
+    const [cookies, setCookie, removeCookie] = useCookies(null)
+
+
+
+
     return (
         <>
         <div className="auth-container">
@@ -13,4 +20,4 @@ const Createaccount = () => {
     )
 }
 
-export default Createaccount
+export default Login

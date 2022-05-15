@@ -9,15 +9,51 @@ import { IoPizzaOutline } from "react-icons/io5"
 import { IoPawOutline } from "react-icons/io5"
 import Suggestedaccounts from "../components/suggestedaccounts";
 import Videocard from "../components/videocard";
-import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useCookies, Cookies} from "react-cookie";
+
 
 
 const Feed = () => {
+    const [loggedIn, setIsLoggedIn] = useState(false)
+    const [cookies, setCookie, removeCookie] = useCookies(null)
+
+    const username = cookies.username
+
+    let navigator = useNavigate()
+
+    const handleLogInRedirect =() => {
+        navigator('/login')
+        removeCookie('username')
+        window.location.reload()
+
+    }
+    const handleLogOut = () => {
+        setIsLoggedIn(false)
+        navigator('/login')
+        window.location.reload()
+
+    }
+
+
+
+
+  useEffect(() => {
+
+      if(username) {
+          setIsLoggedIn(true)
+      }else {
+          setIsLoggedIn(false)
+      }
+      }
+
+  )
+    console.log(username)
 
 
 
     return (
-
                 <>
                     <div className="header-container">
                         <div className="logo-container">
@@ -35,15 +71,29 @@ const Feed = () => {
                                     Upload
                                 </button>
                             </div>
-                            <div className="login-button-container">
-                                <button className="login-button">
-                                    Log in
-                                </button>
-                            </div>
+                            {(loggedIn == true) ?
+                                (<div className="login-button-container">
+                                    <button className="login-button" onClick={handleLogOut}>
+                                        Log Out
+                                    </button>
+                                </div>) : (<div className="login-button-container">
+                                    <button className="login-button" onClick={handleLogInRedirect}>
+                                        Log In
+                                    </button>
+                                </div>)
+
+                            }
                             <div className="more-button-container">
                                 <HiDotsVertical className="more"/>
                             </div>
                         </div>
+                        {loggedIn &&
+                            (<div className="user-profile">
+                            <p>
+                                {username}
+                            </p>
+                        </div>)
+                        }
                     </div>
 
                     <div className="sidebar-container">
@@ -69,17 +119,25 @@ const Feed = () => {
                                 </div>
                             </div>
                         </div>
+
                         <div className="login-sidebar-container">
                             <div className="login-text-container">
                                 <p>
                                     Log in to follow creators, like videos, and view comments.
                                 </p>
                             </div>
-                            <div className="login-button-sidebar-container">
-                                <button className="login-sidebar">
-                                    Log in
+                            {loggedIn ? (<div className="login-button-sidebar-container">
+                                <button className="login-sidebar" onClick={handleLogInRedirect}>
+                                    Log Out
                                 </button>
-                            </div>
+                            </div>):(
+                                <div className="login-button-sidebar-container">
+                                    <button className="login-sidebar" onClick={handleLogInRedirect}>
+                                        Log In
+                                    </button>
+                                </div>
+                            )}
+
                         </div>
                         <div className="popular-topics-container">
                             <p className="topic-header">
@@ -125,9 +183,13 @@ const Feed = () => {
                             <Suggestedaccounts/>
                         </div>
                     </div>
-                    <div className="test">
-                        <Videocard/>
-                    </div>
+                    {loggedIn ?
+                        (<div className="test">
+                            <Videocard key={username}/>
+                        </div>) : <div className="test">
+                            fuck you log in pussy
+                        </div>
+                    }
 
                 </>
 
