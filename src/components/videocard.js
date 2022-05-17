@@ -11,16 +11,10 @@ const Videocard = () => {
 
     const [items, setItems] = useState(null)
     const [liked, setLiked] = useState(false)
-    const [userID, setUserID] = useState("")
+    const [userID, setUserID] = useState(null)
     const url ="http://localhost:8000/users"
 
-    const handleMouseEnter = (e) => {
-        e.target.play()
-        console.log(e.target)
-    }
-    const handleMouseOut = (e) => {
-        e.target.pause()
-    }
+
 
 
     const HandleVidRequest = async (url) => {
@@ -35,27 +29,33 @@ const Videocard = () => {
     }
     useEffect(() => {
             HandleVidRequest(url)
-        console.log(`this is the users received${items}`)
+
     }, [])
 
-     const handleLike = (userID) => {
+     const handleLike = (userID, videoname) => {
         try {
             const response = axios.put(`http://localhost:8000/like${userID}`)
             setLiked(true)
+            setUserID(userID)
+            const otherresponse = axios.put(`http://localhost:8000/liked_videos/${userID}/${videoname}`)
         } catch (error) {
             console.log(error)
         }
      }
 
-     const handleUnlike = () => {
+     const handleUnlike = (userID) => {
         try {
-            const response = axios.put("http://localhost:8000/unliketest")
+            const response = axios.put(`http://localhost:8000/unlike${userID}`)
+            console.log(userID)
             setLiked(false)
+            setUserID(userID)
         } catch (error) {
             console.log(error)
         }
      }
-     console.log(liked)
+
+
+
 
 
     return (
@@ -90,15 +90,14 @@ const Videocard = () => {
 
                                                {liked ? (
                                                    <>
-                                                   <AiFillHeart className="icon-likes-red" onClick={handleUnlike} />
-                                                   <p className="number-likes"
-                                                   >
+                                                   <AiFillHeart className="icon-likes-red" onClick={event => handleUnlike(accounts.user_id)}/>
+                                                   <p className="number-likes">
                                                        {accounts.likes}
+
                                                    </p>
-                                                   </>) :(<> <AiFillHeart className="icon-likes" onClick={handleLike}/>
-                                                   <p className="number-likes"
-                                                   >
-                                               {accounts.likes}
+                                                   </>) :(<> <AiFillHeart className="icon-likes" onClick={event => handleLike(accounts.user_id, accounts.video)}/>
+                                                   <p className="number-likes">
+                                                        {accounts.likes}
                                                    </p>
                                                    </>)
                                                }

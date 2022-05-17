@@ -97,13 +97,14 @@ app.put('/like:username', async (req, res) => {
         const users = database.collection("users")
         const query = {user_id: userID}
         const currentLikes = await users.findOne({ user_id: userID })
+        const options = { upsert: true }
 
         const updateDoc = {
             $set: {
                 likes: currentLikes.likes + 1
             }
         }
-        const result = await users.updateOne(query, updateDoc)
+        const result = await users.updateOne(query, updateDoc, options)
         if (result) {
             res.status(201).send(result)
         } else {
@@ -124,12 +125,13 @@ app.put('/unlike:username', async (req, res) => {
         const users = database.collection("users")
         const query = {user_id: userID}
         const currentLikes = await users.findOne({ user_id: userID })
-
         const updateDoc = {
-            $set: {
-                likes: currentLikes.likes - 1
-            }
-        }
+                $set: {
+                 likes: currentLikes.likes - 1
+                }
+         }
+
+
         const result = await users.updateOne(query, updateDoc)
         if (result) {
             res.status(201).send(result)
@@ -141,5 +143,35 @@ app.put('/unlike:username', async (req, res) => {
         await client.close()
     }
 })
+app.put('/liked_videos/:user_id/:video_name', async (req, res) => {
+    const client = new MongoClient(uri)
+    const userID = req.params.username
+    const video = req.params.video_name
+    console.log(req.params)
+    console.log("hit")
 
+    try {
+        await client.connect()
+        const database = client.db("app-data")
+        const users = database.collection("users")
+        const query = {user_id: userID}
+        const options = {upsert: true}
+        const updateDoc = {
+            $push: {
+
+                liked_videos: video
+            }
+        }
+        const result = await users.updateOne(query, updateDoc, options)
+
+        if (result) {
+            res.status(201).send(result)
+        } else {
+            res.status(409).send('fuck')
+        }
+
+    } finally {
+        await client.close()
+    }
+})
 app.listen(PORT, () => console.log("Server is running"))
