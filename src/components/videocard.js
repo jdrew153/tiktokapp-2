@@ -4,19 +4,27 @@ import { BsChatDotsFill} from "react-icons/bs"
 import { TiArrowForward } from "react-icons/ti"
 import axios from "axios";
 import { useEffect, useState} from "react";
-import {useCookies} from "react-cookie";
+
 
 
 const Videocard = () => {
 
     const [items, setItems] = useState(null)
-    const [loaded, setLoaded] = useState(false)
+    const [liked, setLiked] = useState(false)
+    const [userID, setUserID] = useState("")
     const url ="http://localhost:8000/users"
+
+    const handleMouseEnter = (e) => {
+        e.target.play()
+        console.log(e.target)
+    }
+    const handleMouseOut = (e) => {
+        e.target.pause()
+    }
 
 
     const HandleVidRequest = async (url) => {
         try {
-
             const response = await axios.get(url)
             const data = response.data
             setItems(data)
@@ -26,15 +34,28 @@ const Videocard = () => {
         }
     }
     useEffect(() => {
-
             HandleVidRequest(url)
-
-
         console.log(`this is the users received${items}`)
     }, [])
 
+     const handleLike = (userID) => {
+        try {
+            const response = axios.put(`http://localhost:8000/like${userID}`)
+            setLiked(true)
+        } catch (error) {
+            console.log(error)
+        }
+     }
 
-
+     const handleUnlike = () => {
+        try {
+            const response = axios.put("http://localhost:8000/unliketest")
+            setLiked(false)
+        } catch (error) {
+            console.log(error)
+        }
+     }
+     console.log(liked)
 
 
     return (
@@ -43,25 +64,45 @@ const Videocard = () => {
                items?.map((accounts) => (
                    <div className="main-video-container">
                        <div className="profile-picture-spacer-video">
-                           <img className="video-profile-picture" src={accounts?.profile_pic_url} alt="loading"/>
+                           <img className="video-profile-picture" src={accounts?.profile_pic_url} alt="loading"
+                               />
                        </div>
-                       <div className="actual-video-container">
+                       <div className="actual-video-container"
+                            >
                            <div className="video-tags-container">
                                <div className="tag-container">
                                    <p className="tags">
                                        {accounts?.profile_description}
                                    </p>
                                </div>
-                               <div className="video-likes-container">
-                                   <video className="main-video" src={accounts.video} controls={true} autoFocus={true}
-                                          autoPlay={true} muted={true}/>
+                               <div className="video-likes-container"
+                               >
+                                   <video className="main-video"
+                                          muted={true}
+                                          controls={true}
+                                          onMouseOver={event => event.target.play()}
+                                          onMouseOut={event => event.target.pause()}
+                                          src={accounts.video}
+                                   />
                                    <div className="video-options">
                                        <div className="likes-container">
                                            <div className="likes-icon">
-                                               <AiFillHeart className="icon-likes"/>
-                                               <p className="number-likes">
-                                                   {accounts.likes}
-                                               </p>
+
+                                               {liked ? (
+                                                   <>
+                                                   <AiFillHeart className="icon-likes-red" onClick={handleUnlike} />
+                                                   <p className="number-likes"
+                                                   >
+                                                       {accounts.likes}
+                                                   </p>
+                                                   </>) :(<> <AiFillHeart className="icon-likes" onClick={handleLike}/>
+                                                   <p className="number-likes"
+                                                   >
+                                               {accounts.likes}
+                                                   </p>
+                                                   </>)
+                                               }
+
                                            </div>
                                        </div>
                                        <div className="comments-container">

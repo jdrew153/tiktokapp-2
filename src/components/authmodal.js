@@ -8,6 +8,7 @@ const Authmodal =  () => {
     const [password, setPassword] = useState(null)
     const [isLoggedIn, setisLoggedIn] = useState(false)
     const [error, setError] = useState(null)
+    const [pic, setPic] = useState(null)
     const [cookies, setCookie, removeCookie] =useCookies(null)
 
     let navigator = useNavigate()
@@ -23,11 +24,14 @@ const Authmodal =  () => {
 
         try {
             const response = await axios.get(`http://localhost:8000/specific_user${email}`)
-            console.log(response.data)
+
             if (response.status === 201) {
                 setisLoggedIn(true)
                 setCookie('username',email, {path: "/"})
+
+                setCookie('profile_picture', response.data.profile_pic_url, {path: "/"} )
                 navigator('/feed')
+
             } else {
                 setError("account not found, try again or create an account")
             }

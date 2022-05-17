@@ -87,4 +87,59 @@ app.post('/signup', async (req,res) => {
     }
 })
 
+app.put('/like:username', async (req, res) => {
+    const client = new MongoClient(uri)
+    const userID = req.params.username
+
+    try {
+        await client.connect()
+        const database = client.db("app-data")
+        const users = database.collection("users")
+        const query = {user_id: userID}
+        const currentLikes = await users.findOne({ user_id: userID })
+
+        const updateDoc = {
+            $set: {
+                likes: currentLikes.likes + 1
+            }
+        }
+        const result = await users.updateOne(query, updateDoc)
+        if (result) {
+            res.status(201).send(result)
+        } else {
+            res.status(409).send('fuck')
+        }
+
+    } finally {
+        await client.close()
+    }
+})
+app.put('/unlike:username', async (req, res) => {
+    const client = new MongoClient(uri)
+    const userID = req.params.username
+
+    try {
+        await client.connect()
+        const database = client.db("app-data")
+        const users = database.collection("users")
+        const query = {user_id: userID}
+        const currentLikes = await users.findOne({ user_id: userID })
+
+        const updateDoc = {
+            $set: {
+                likes: currentLikes.likes - 1
+            }
+        }
+        const result = await users.updateOne(query, updateDoc)
+        if (result) {
+            res.status(201).send(result)
+        } else {
+            res.status(409).send('fuck')
+        }
+
+    } finally {
+        await client.close()
+    }
+})
+
 app.listen(PORT, () => console.log("Server is running"))

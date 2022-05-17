@@ -20,6 +20,7 @@ const Feed = () => {
     const [cookies, setCookie, removeCookie] = useCookies(null)
 
     const username = cookies.username
+    const pic = cookies.profile_picture
 
     let navigator = useNavigate()
 
@@ -36,9 +37,6 @@ const Feed = () => {
 
     }
 
-
-
-
   useEffect(() => {
 
       if(username) {
@@ -49,7 +47,8 @@ const Feed = () => {
       }
 
   )
-    console.log(username)
+   console.log(pic)
+
 
 
 
@@ -92,8 +91,11 @@ const Feed = () => {
                             <p>
                                 {username}
                             </p>
-                        </div>)
+                        </div>
+                            )
+
                         }
+                        {loggedIn && (<img className="profile-picture" src={pic}/>)}
                     </div>
 
                     <div className="sidebar-container">
@@ -121,11 +123,17 @@ const Feed = () => {
                         </div>
 
                         <div className="login-sidebar-container">
-                            <div className="login-text-container">
+                            {loggedIn ? (<div className="login-text-container">
+                                <p>
+                                    Keep looking at videos pussy
+
+                                </p>
+                            </div>) : (<div className="login-text-container">
                                 <p>
                                     Log in to follow creators, like videos, and view comments.
                                 </p>
-                            </div>
+                            </div>)}
+
                             {loggedIn ? (<div className="login-button-sidebar-container">
                                 <button className="login-sidebar" onClick={handleLogInRedirect}>
                                     Log Out
@@ -184,12 +192,15 @@ const Feed = () => {
                         </div>
                     </div>
                     {loggedIn ?
-                        (<div className="test">
-                            <Videocard key={username}/>
-                        </div>) : <div className="test">
+                        ( <div className="test">
+                                <Videocard  key={username} />
+                        </div>
+
+                        ) : <div className="test">
                             fuck you log in pussy
                         </div>
                     }
+
 
                 </>
 

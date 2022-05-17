@@ -3,9 +3,12 @@
     width: 100vw;
     height: 75px;
     border-bottom: solid;
+    background-color: #FFFFFF;
     border-bottom-color: #FCFCFC;
     border-bottom-width: 3px ;
     display: flex;
+    position: fixed;
+    z-index: 2;
 
 
 }
@@ -45,8 +48,9 @@
 }
 .buttons-container {
     display: flex;
-    margin-left: 300px;
+    margin-left: 5vw;
     margin-top: 15px;
+    background-color: #FFFFFF;
 }
 .upload-button-container {
     padding: 10px;
@@ -90,6 +94,7 @@
     margin-left: 400px;
     height: 100vh;
     width: 300px;
+    margin-top: 5vw;
     position: fixed;
     overflow: auto;
 }
@@ -196,6 +201,10 @@
     width: 50px;
     border-radius: 80px;
 }
+
+.profile-picture-spacer-video {
+
+}
 .sidebar-profile-account-description {
     width: 260px;
     padding-left: 10px;
@@ -227,13 +236,15 @@
 }
 
 .main-video-container {
+    marign-top: 50px;
     margin-left: 725px;
     height: 500px;
     width: 925px;
     display: flex;
     border-bottom: 2px solid #F1F1F1;
-
 }
+
+
 .video-profile-picture {
     height: 80px;
     width: 80px;
@@ -250,11 +261,18 @@
 }
 .main-video {
     width: 75%;
+    height: 60%;
+    min-width: 100px;
+    min-height: 80px;
+    max-width: 700px;
+    max-height: 500px;
     border-radius: 15px;
     margin-top: 15px;
 }
 .video-likes-container {
     display: flex;
+    z-index: -1;
+    position: absolute;
 }
 .video-options {
     margin-top: 150px;
@@ -282,6 +300,13 @@
     width: 25px;
     margin-left: 7px;
     margin-top: 8px;
+}
+.icon-likes-red{
+    height: 25px;
+    width: 25px;
+    margin-left: 7px;
+    margin-top: 8px;
+    color: red;
 }
 .number-likes {
     font-size: 9px;
@@ -336,6 +361,7 @@
 }
 .test {
     height: 300px;
+    padding-top: 100px;
 }
 
 /*account-signup-page*/
@@ -346,12 +372,12 @@
 
 /* login page */
 .main-auth-modal-container {
-    height: 400px;
-    width: 400px;
+    height: 48vh;
+    width: 28vw;
     background-color: #FFFF;
     position: absolute;
-    margin-top: 100px;
-    margin-left: 1100px;
+    margin-top: 1vh;
+    margin-left: 60vw;
     border-radius: 5px;
     display: flex;
 
@@ -360,6 +386,20 @@
     background-color: #F1F1F1;
     height: 50vh;
     position: relative;
+    display: flex;
+}
+.auth-container-logo {
+    margin-left: 200px;
+    margin-top: 15px;
+    font-family: "Helvetica Neue";
+
+}
+.logo-tag-name {
+    margin-left: 400px;
+    margin-right: auto;
+    font-size: 30px;
+    opacity: 0.9;
+    font-style: italic;
 }
 .email-input {
     margin-top: 20px;
@@ -426,4 +466,17 @@
 }
 .create-account-button:hover {
     cursor: pointer;
+}
+
+.test-2 {
+    height: 100px;
+    width: 100px;
+    background-color: #000;
+}
+
+.other-test {
+    position: relative;
+}
+.actual-video-container {
+    z-index: 1;
 }
