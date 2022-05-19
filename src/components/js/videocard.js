@@ -1,4 +1,4 @@
-import "../App.css"
+import "../../App.css"
 import { AiFillHeart } from "react-icons/ai"
 import { BsChatDotsFill} from "react-icons/bs"
 import { TiArrowForward } from "react-icons/ti"

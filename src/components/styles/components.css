@@ -1,0 +1,106 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(184px, 1fr));
+    gap: 24px 16px;
+}
+.mini-video-card-container {
+
+    max-width: 250px;
+    max-height: 500px;
+}
+.individual-img-wrapper {
+    display: flex;
+    justify-content: center;
+}
+.individual-img {
+
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+
+}
+.mini-video-card-caption{
+    display: flex;
+    justify-content: flex-start;
+}
+.overall-container {
+   margin-left: 400px;
+    padding-top: 100px;
+}
+.header-header-container {
+    margin-top: 10px;
+
+}
+.user-profile-header {
+    display: inline-block;
+}
+.user-profile-header-wrapper {
+    display: flex;
+    padding-bottom: 20px;
+}
+.profile-picture-header {
+    height: 120px;
+    width: 120px;
+    border-radius: 80px;
+}
+
+.user-profile-username {
+    margin-left: 20px;
+    flex: 1 1 0%;
+    overflow: visible;
+
+}
+.follow-button {
+    height: 40px;
+    width: 200px;
+    border: hidden;
+    border-radius: 10px;
+    background-color: #EF2950;
+    color: #FFFF;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.followers-options-container {
+    display: flex;
+    opacity: 0.8;
+}
+.header-username {
+    font-family: SofiaPro, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38px;
+    padding-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.header-profile-description {
+    font-family: ProximaNova, Arial, Tahoma, PingFangSC, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 25px;
+    text-overflow: ellipsis;
+    height: 25px;
+    overflow: hidden;
+    max-width: 450px;
+    white-space: nowrap;
+    display: flex;
+    align-items: flex-end;
+    margin-top: 5px;
+}
+
+.user-following-container {
+    padding-left: 10px;
+
+}
+.followers-text {
+    padding-left: 4px;
+}
+.signature-text {
+    font-weight: 400;
+    font-size: 16px;
+}

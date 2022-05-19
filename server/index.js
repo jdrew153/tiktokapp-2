@@ -145,7 +145,7 @@ app.put('/unlike:username', async (req, res) => {
 })
 app.put('/liked_videos/:user_id/:video_name', async (req, res) => {
     const client = new MongoClient(uri)
-    const userID = req.params.username
+    const userID = req.params.user_id
     const video = req.params.video_name
     console.log(req.params)
     console.log("hit")
@@ -155,20 +155,38 @@ app.put('/liked_videos/:user_id/:video_name', async (req, res) => {
         const database = client.db("app-data")
         const users = database.collection("users")
         const query = {user_id: userID}
-        const options = {upsert: true}
         const updateDoc = {
             $push: {
 
                 liked_videos: video
             }
         }
-        const result = await users.updateOne(query, updateDoc, options)
+        const result = await users.updateOne(query, updateDoc)
 
         if (result) {
             res.status(201).send(result)
         } else {
             res.status(409).send('fuck')
         }
+
+    } finally {
+        await client.close()
+    }
+})
+
+app.get('/user_videos/:user_id', async (req, res) => {
+    const client = new MongoClient(uri)
+    const userID = req.params.user_id
+
+    try {
+        await client.connect()
+        const database = client.db("app-data")
+        const users = database.collection("users")
+        const user = await users.findOne({user_id: userID})
+
+
+
+        res.send(user)
 
     } finally {
         await client.close()

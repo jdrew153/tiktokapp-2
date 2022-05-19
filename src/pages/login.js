@@ -1,4 +1,4 @@
-import Authmodal from "../components/authmodal";
+import Authmodal from "../components/js/authmodal";
 
 
 const Login = () => {

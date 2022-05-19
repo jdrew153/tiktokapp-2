@@ -1,4 +1,4 @@
-import '../App.css'
+import '../../App.css'
 import axios from "axios";
 import { useEffect, useState } from "react"
 
@@ -29,6 +29,7 @@ const Suggestedaccounts = () => {
           <>
               {accounts.map((account) => (
                   <>
+                      <a href={`/user-page/${account.user_id}`}>
                       <div className="row">
                           <img className="profile-picture" src={account.profile_pic_url} alt="loading"/>
                           <div className="sidebar-profile-account-description">
@@ -42,6 +43,8 @@ const Suggestedaccounts = () => {
                               </div>
                           </div>
                       </div>
+                      </a>
+
               </>
               ))}
           </>

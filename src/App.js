@@ -3,6 +3,7 @@ import Home from '../src/pages/home'
 import Feed from '../src/pages/feed'
 import Createaccount from "./pages/createaccount";
 import Login from "./pages/login";
+import Userprofilepage from "./pages/userprofilepage";
 import './App.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path={"/feed"} element={<Feed/>}/>
       <Route path={"/create-account"} element={<Createaccount/>}/>
       <Route path={"/login"} element={<Login/>}/>
+      <Route path={"/user-page/:user_id"} element={<Userprofilepage/>}/>
     </Routes>
     </BrowserRouter>
   );
