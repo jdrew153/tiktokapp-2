@@ -35,9 +35,12 @@ const Sidebar = () => {
                 <div className="page-navigator-container">
                     <div className="home-container">
                         <AiOutlineHome className="home"/>
-                        <h3>
-                            For You
-                        </h3>
+                        <a href={'/feed'}>
+                            <h3>
+                                For You
+                            </h3>
+                        </a>
+
                     </div>
                     <div className="following-container">
                         <BsPeople className="following"/>

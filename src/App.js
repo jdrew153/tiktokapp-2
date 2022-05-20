@@ -5,6 +5,7 @@ import Createaccount from "./pages/createaccount";
 import Login from "./pages/login";
 import Userprofilepage from "./pages/userprofilepage";
 import './App.css';
+import Largeuservideo from "./pages/largeuservideo";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path={"/create-account"} element={<Createaccount/>}/>
       <Route path={"/login"} element={<Login/>}/>
       <Route path={"/user-page/:user_id"} element={<Userprofilepage/>}/>
+      <Route path={"/:user_id/:video_id"} element={<Largeuservideo/>}/>
     </Routes>
     </BrowserRouter>
   );

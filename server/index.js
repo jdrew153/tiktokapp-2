@@ -183,13 +183,30 @@ app.get('/user_videos/:user_id', async (req, res) => {
         const database = client.db("app-data")
         const users = database.collection("users")
         const user = await users.findOne({user_id: userID})
-
-
-
         res.send(user)
 
     } finally {
         await client.close()
     }
 })
+
+app.get('/largevideo/:user_id', async (req, res) => {
+    const client = new MongoClient(uri)
+    const userID = req.params.user_id
+    const video_id = req.params.video_id
+
+    try {
+        await client.connect()
+        const database = client.db("app-data")
+        const users = database.collection("users")
+        const user = await users.findOne({user_id: userID})
+        const video_array = user.videos
+
+        res.send(video_array)
+
+    } finally {
+        await client.close()
+    }
+})
+
 app.listen(PORT, () => console.log("Server is running"))

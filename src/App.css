@@ -96,7 +96,8 @@
     width: 300px;
     margin-top: 5vw;
     position: fixed;
-    overflow: auto;
+    overflow: scroll;
+
 }
 .page-navigator-container {
     margin-top: 20px;

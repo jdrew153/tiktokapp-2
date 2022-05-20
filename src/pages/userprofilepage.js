@@ -40,7 +40,7 @@ const Userprofilepage =  () => {
 
             <div className="header-header-container">
             <Userprofileheader profile_picture={image}
-            username={profile.user_name}
+            username={profile.username}
             profile_description={profile.profile_description}
             followed={"32"}
             followers={"45"}
@@ -51,7 +51,9 @@ const Userprofilepage =  () => {
             <div className="mini-video-card-grid-wrapper">
             <div className="grid-container">
         {profile.videos.map((video) => (
+            <a href={`/${profile.user_id}/${video.video_id}`}>
             <Minivideocard image_url={video.source} video_caption={video.caption}/>
+            </a>
             ))
 
         }
