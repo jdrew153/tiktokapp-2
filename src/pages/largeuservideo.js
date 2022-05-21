@@ -4,6 +4,7 @@ import {useState,useEffect} from "react";
 import {AiOutlineCloseCircle} from 'react-icons/ai'
 import Comment from "../components/js/comment";
 
+
 const Largeuservideo = () => {
     const { user_id } = useParams()
     const { video_id } = useParams()
@@ -12,6 +13,7 @@ const Largeuservideo = () => {
     const [comment, setComment] = useState(null)
     const [profile_pic_url, setProfilePicURL] = useState(null)
     const [username, setUsername] = useState(null)
+    const [postComment, setPostComment] = useState(null)
 
     const handleLargeVideoRequest = async (user_id) => {
         const response = await axios.get(`http://localhost:8000/largevideo/${user_id}`)
@@ -36,12 +38,27 @@ const Largeuservideo = () => {
 
     }
 
+    const handleCommentPost = async (e, user_id, video_id) => {
+        e.preventDefault()
+        try {
+            if (comment) {
+                const response = await axios.post(`http://localhost:8000/comment/${user_id}/${video_id}`, {username, comment})
+                console.log(response.data)
+                window.location.reload()
+            }
+        } catch (e) {
+            console.log(e)
+        }
+
+
+    }
+
 
 
     useEffect(() => {
         handleLargeVideoRequest(user_id)
     },[video_id])
-    console.log(comment, username)
+
 
 
 
@@ -73,7 +90,24 @@ const Largeuservideo = () => {
                     (<p>
                         Be the first to comment
                     </p>)}
+
+                < div className="comment-form-wrapper">
+                    <form className="comment-form" onSubmit={event => handleCommentPost(user_id,video_id)}>
+                        <input
+                            type="text"
+                            id ="comment"
+                            onChange={event => setPostComment(event.target.value)}
+
+                        />
+                    </form>
+                </div>
+                <div className="comment-post-button-wrapper">
+                    <button form="comment-form">
+                        Post
+                    </button>
+                </div>
             </div>
+
         </div>
         </div>
 

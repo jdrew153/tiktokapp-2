@@ -208,4 +208,48 @@ app.get('/largevideo/:user_id', async (req, res) => {
         await client.close()
     }
 })
+app.post('/comment/:user_id/:video_id', async (req,res) => {
+    const client = new MongoClient(uri)
+    const userID = req.params.user_id
+    const videoID = req.params.video_id
+    console.log('hit')
+
+    const { comment, username } = req.body
+    try {
+        await client.connect()
+        const database = client.db("app-data")
+        const users = database.collection("users")
+        const query = await users.findOne({user_id: userID})
+
+
+        const commentDataStruct = {
+            comment_id: Math.random(),
+            username: username,
+            comment: comment
+
+        }
+
+        const UpdateDoc = {
+
+        }
+
+
+        const insertedComment = await users.insertOne(
+
+            query,
+            UpdateDoc
+
+        )
+
+
+
+
+
+
+
+
+    } finally {
+        await client.close()
+    }
+})
 app.listen(PORT, () => console.log("Server is running"))
