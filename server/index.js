@@ -208,41 +208,73 @@ app.get('/largevideo/:user_id', async (req, res) => {
         await client.close()
     }
 })
-app.post('/comment/:user_id/:video_id', async (req,res) => {
-    const client = new MongoClient(uri)
-    const userID = req.params.user_id
-    const videoID = req.params.video_id
-    console.log('hit')
 
-    const { comment, username } = req.body
+app.get ('/retrievecomment/:video_id', async (req,res) => {
+    const client = new MongoClient(uri)
+    const videoID = req.params.video_id
+
     try {
         await client.connect()
         const database = client.db("app-data")
-        const users = database.collection("users")
-        const query = await users.findOne({user_id: userID})
+        const comments = database.collection("comments")
+
+        const comments_array =  await comments.findOne({video_id: videoID})
+
+        res.send(comments_array)
+    } finally {
+        await client.close()
+    }
+})
+app.put('/comment/:user_id/:video_id', async (req,res) => {
+    const client = new MongoClient(uri)
+    const videoID = req.params.video_id
+    const { postUsername, firstComment } = req.body
+
+    let today = new Date();
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    let dateTime = date+' '+time;
+
+
+    try {
+        await client.connect()
+        const database = client.db("app-data")
+        const comments = database.collection("comments")
+        const query = {video_id: videoID}
 
 
         const commentDataStruct = {
             comment_id: Math.random(),
-            username: username,
-            comment: comment
-
+            username: postUsername,
+            comment: firstComment,
+            time_stamp: dateTime,
+            likes: 0
         }
+
+
 
         const UpdateDoc = {
+            $push: {
+                comments: commentDataStruct
+            }
+        }
+
+        const createDoc = {
+
+                video_id: videoID,
+                comments: [ {
+                    comments: commentDataStruct
+                }
+                ]
 
         }
 
 
-        const insertedComment = await users.insertOne(
-
-            query,
-            UpdateDoc
-
-        )
 
 
-
+            const insertedComment = await comments.updateOne(query, UpdateDoc)
+            console.log('hit')
+            res.send(insertedComment)
 
 
 
@@ -250,6 +282,48 @@ app.post('/comment/:user_id/:video_id', async (req,res) => {
 
     } finally {
         await client.close()
+    }
+})
+
+app.put('/writecomment/:video_id', async (req,res) => {
+    const client = new MongoClient(uri)
+    const videoID = req.params.video_id
+    const { postUsername, firstComment} = req.body
+
+    let today = new Date();
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    let dateTime = date+' '+time;
+
+    try {
+        await client.connect()
+        const database = client.db("app-data")
+        const comments = database.collection("comments")
+
+
+        const commentDataStruct = {
+            comment_id: Math.random(),
+            username: postUsername,
+            comment: firstComment,
+            time_stamp: dateTime,
+            likes: 0
+        }
+
+        const createDoc = {
+
+            video_id: videoID,
+            comments: [ {
+                comments: commentDataStruct
+            }
+            ]
+
+        }
+        const postedComment = await comments.insertOne(createDoc)
+        res.send(postedComment)
+
+
+    } finally {
+        await  client.close()
     }
 })
 app.listen(PORT, () => console.log("Server is running"))

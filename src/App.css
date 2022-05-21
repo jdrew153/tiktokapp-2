@@ -96,7 +96,7 @@
     width: 300px;
     margin-top: 5vw;
     position: fixed;
-    overflow: scroll;
+    overflow: hidden auto;
 
 }
 .page-navigator-container {
