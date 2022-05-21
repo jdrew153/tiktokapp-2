@@ -1,8 +1,5 @@
 import '../styles/components.css'
-import {useState} from "react";
-
 const Minivideocard = ({ image_url, video_caption }) => {
-
     return(
         <>
         <div className="mini-video-card-container">

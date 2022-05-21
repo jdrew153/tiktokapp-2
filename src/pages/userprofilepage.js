@@ -39,7 +39,7 @@ const Userprofilepage =  () => {
             <div className="overall-container">
 
             <div className="header-header-container">
-            <Userprofileheader profile_picture={image}
+            <Userprofileheader profile_picture={profile.profile_pic_url}
             username={profile.username}
             profile_description={profile.profile_description}
             followed={"32"}

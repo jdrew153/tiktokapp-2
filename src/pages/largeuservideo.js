@@ -1,13 +1,17 @@
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {useState,useEffect} from "react";
+import {AiOutlineCloseCircle} from 'react-icons/ai'
+import Comment from "../components/js/comment";
 
 const Largeuservideo = () => {
     const { user_id } = useParams()
     const { video_id } = useParams()
 
     const [largevideo, setLargeVideo] = useState(null)
-    const [postTime, setPostTime] = useState(null)
+    const [comment, setComment] = useState(null)
+    const [profile_pic_url, setProfilePicURL] = useState(null)
+    const [username, setUsername] = useState(null)
 
     const handleLargeVideoRequest = async (user_id) => {
         const response = await axios.get(`http://localhost:8000/largevideo/${user_id}`)
@@ -16,39 +20,63 @@ const Largeuservideo = () => {
         video_array.forEach((video) => {
           if (video.video_id == video_id) {
               setLargeVideo(video.source)
-              var current = new Date()
+
+              video.comments.forEach((c) => {
+                  setUsername(c.username)
+                  setComment(c.comment)
+              })
 
 
           } else {
               console.log('not the video youre looking for')
           }
+
         })
+
+
     }
+
+
 
     useEffect(() => {
         handleLargeVideoRequest(user_id)
     },[video_id])
+    console.log(comment, username)
 
 
 
     return (
-        <>
+        <>  <div className="large-video-options-wrapper">
+
+            <a href={`/user-page/${user_id}`}>
+                <AiOutlineCloseCircle className="exit-button" />
+            </a>
+        </div>
+
         <div className="specific-video-background">
-        <div className="large-video-background">
+        <div className="large-video-background" >
             <video className="large-video"
                 src={largevideo}>
             </video>
-        </div>
             <div className="large-video-wrapper">
-                <div className="large-video-container">
-                    <video className="large-video-front"
-                           src={largevideo}
-                           controls={true}>
-                    </video>
-                </div>
+            <div className="large-video-container">
+                <video className="large-video-front"
+                       src={largevideo}
+                       controls={true}>
+                </video>
+            </div>
 
+        </div>
+            <div className="profile-comments-container">
+                {comment ? (<Comment comment={comment} username={username}/>)
+                :
+                    (<p>
+                        Be the first to comment
+                    </p>)}
             </div>
         </div>
+        </div>
+
 
         </>
     )
