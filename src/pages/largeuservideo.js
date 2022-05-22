@@ -1,9 +1,10 @@
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {useState,useEffect} from "react";
-import {AiOutlineCloseCircle} from 'react-icons/ai'
+import {AiOutlineCloseCircle, AiOutlineEllipsis} from 'react-icons/ai'
 import Comment from "../components/js/comment";
 import {useCookies} from "react-cookie";
+import Specificvideoheader from "../components/js/specificvideoheader";
 
 
 const Largeuservideo = () => {
@@ -13,17 +14,29 @@ const Largeuservideo = () => {
 
     const [largevideo, setLargeVideo] = useState(null)
     const [comment, setComment] = useState(null)
-    const [profile_pic_url, setProfilePicURL] = useState(null)
     const [postComment, setPostComment] = useState(null)
     const [firstComment, setFirstcomment] = useState(null)
     const [commentPosted, setCommentPosted] = useState(false)
     const [cookies, setCookies, removeCookies] = useCookies()
 
+    const [username, setUsername] = useState(null)
+    const [profile_picture_url, setProfile_Picture_URL] = useState(null)
+
+    const [totalComms, setTotalComms] = useState(null)
+
+    const [deletedComment, setDeletedComment] = useState(false)
+
+
     const postUsername = cookies.username
+    const profile_pic = cookies.profile_picture
 
     const handleLargeVideoRequest = async (user_id) => {
-        const response = await axios.get(`http://localhost:8000/largevideo/${user_id}`)
-        const video_array = response.data
+        const response = await axios.get(`http://localhost:8000/user_videos/${user_id}`)
+
+        setUsername(response.data.username)
+        setProfile_Picture_URL(response.data.profile_pic_url)
+
+        const video_array = response.data.videos
 
         video_array.forEach((video) => {
           if (video.video_id == video_id) {
@@ -34,12 +47,12 @@ const Largeuservideo = () => {
         })
     }
 
-    const handleCommentPost = async (e, user_id, video_id) => {
-        console.log('hit')
+    const handleCommentPost = async (user_id, video_id) => {
+        console.log('posting a comment')
         setCommentPosted(false)
         try {
             if (comment) {
-                const response = await axios.put(`http://localhost:8000/comment/${user_id}/${video_id}`, {postUsername, postComment})
+                const response = await axios.put(`http://localhost:8000/comment/${user_id}/${video_id}`, {postUsername, postComment, profile_pic})
                 console.log(response.data)
                 setCommentPosted(true)
             }
@@ -49,11 +62,12 @@ const Largeuservideo = () => {
     }
 
     const handleGetComment = async (video_id) => {
-        console.log('otherhit')
+        console.log('getting comments')
         try {
             const response = await axios.get(`http://localhost:8000/retrievecomment/${video_id}`)
             const data = response.data
             setComment(data.comments)
+            setTotalComms(data.comments.length)
         } catch (e) {
             console.log(e)
         }
@@ -63,7 +77,7 @@ const Largeuservideo = () => {
 
         console.log('test')
         try {
-            const response = await axios.put(`http://localhost:8000/writecomment/${video_id}`, {postUsername, firstComment})
+            const response = await axios.put(`http://localhost:8000/writecomment/${video_id}`, {postUsername, firstComment,profile_pic})
             console.log(response.data)
             setCommentPosted(true)
 
@@ -71,6 +85,18 @@ const Largeuservideo = () => {
             console.log(error)
         }
     }
+
+     const handleDeleteComment = async (video_id, comment_id) => {
+        try {
+            const response = await axios.put(`http://localhost:8000/deletecomment/${video_id}/${comment_id}`)
+            console.log(comment_id)
+            console.log(video_id)
+            console.log(response.data)
+            setDeletedComment(true)
+        } catch (error) {
+            console.log(error)
+        }
+     }
 
 
 
@@ -80,7 +106,7 @@ const Largeuservideo = () => {
 
     useEffect(()=> {
         handleGetComment(video_id)
-    }, [commentPosted])
+    }, [])
 
 
 
@@ -108,10 +134,21 @@ const Largeuservideo = () => {
 
         </div>
             <div className="profile-comments-container">
+                <Specificvideoheader profile_pic={profile_picture_url} username={username} numComments={totalComms} />
                 {comment? (
                 <div className="comment-wrapper">
                     {comment?.map((i) => (
-                        <Comment comment={i?.comment} username={i?.username}/>
+                        <>
+                            <Comment comment={i?.comment}
+                                     username={i?.username}
+                                     profile_pic_url={i?.profile_pic}
+                                     time={i?.time_stamp}
+                            />
+                            <div className="comment-options-container">
+                                <AiOutlineEllipsis className="comment-options-icon" onClick={event => handleDeleteComment(video_id, i.comment_id)}/>
+                            </div>
+                        </>
+
                     ))}
 
                     < div className="comment-form-wrapper">
@@ -119,15 +156,14 @@ const Largeuservideo = () => {
                             <input
                                 type="text"
                                 id ="comment"
+                                placeholder="Add a comment..."
                                 onChange={event => setPostComment(event.target.value)}
 
                             />
                         </form>
                     </div>
-                    <div className="comment-post-button-wrapper">
-                        <button form="comment-form">
-                            Post
-                        </button>
+                    <div className="comment-post-button-wrapper" onClick={event => handleCommentPost(user_id,video_id)}>
+
                     </div>
 
                 </div>) : (<> <div>
@@ -139,15 +175,14 @@ const Largeuservideo = () => {
                             <input
                                 type="text"
                                 id ="firstcomment"
+                                placeholder="Be the first comment...."
                                 onChange={event => setFirstcomment(event.target.value)}
 
                             />
                         </form>
                     </div>
                     <div className="comment-post-button-wrapper">
-                        <button form="comment-form" onClick={event => handlePostFirstComment(video_id)}>
-                            Post
-                        </button>
+
                     </div>
 
                 </>)}

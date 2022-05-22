@@ -17,11 +17,13 @@ const Header = () => {
     const handleLogInRedirect =() => {
         navigator('/login')
         removeCookie('username')
+        removeCookie('profile_picture')
         window.location.reload()
 
     }
     const handleLogOut = () => {
         setIsLoggedIn(false)
+        removeCookie('profile_picture')
         navigator('/login')
         window.location.reload()
 
