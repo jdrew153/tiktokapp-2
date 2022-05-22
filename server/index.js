@@ -328,10 +328,10 @@ app.put('/writecomment/:video_id', async (req,res) => {
     }
 })
 
-app.put('/deletecomment/:video_id/:comment_id', async (req,res) => {
+app.delete('/deletecomment/:video_id/:comment_id', async (req,res) => {
     const client = new MongoClient(uri)
     const videoID = req.params.video_id
-    const commentID = req.params.comment_id
+    const { comment_id } = req.body
     console.log('hit')
     try {
         await client.connect()
@@ -347,7 +347,7 @@ app.put('/deletecomment/:video_id/:comment_id', async (req,res) => {
            {
                $pull: {
                    comments: {
-                       comment_id: commentID
+                      comment_id: comment_id
                    }
                }
            })

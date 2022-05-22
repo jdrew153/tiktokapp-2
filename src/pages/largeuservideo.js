@@ -23,8 +23,8 @@ const Largeuservideo = () => {
     const [profile_picture_url, setProfile_Picture_URL] = useState(null)
 
     const [totalComms, setTotalComms] = useState(null)
-
     const [deletedComment, setDeletedComment] = useState(false)
+
 
 
     const postUsername = cookies.username
@@ -88,11 +88,10 @@ const Largeuservideo = () => {
 
      const handleDeleteComment = async (video_id, comment_id) => {
         try {
-            const response = await axios.put(`http://localhost:8000/deletecomment/${video_id}/${comment_id}`)
-            console.log(comment_id)
-            console.log(video_id)
+            const response = await axios.delete(`http://localhost:8000/deletecomment/${video_id}/${comment_id}`, {data: {comment_id: comment_id}})
             console.log(response.data)
             setDeletedComment(true)
+
         } catch (error) {
             console.log(error)
         }
@@ -106,7 +105,7 @@ const Largeuservideo = () => {
 
     useEffect(()=> {
         handleGetComment(video_id)
-    }, [])
+    }, [deletedComment, comment])
 
 
 
