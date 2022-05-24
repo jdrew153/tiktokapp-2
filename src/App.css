@@ -148,6 +148,9 @@
 .login-button-sidebar-container {
     color: #EF2950;
 }
+.login-button-sidebar-container-hidden {
+    visibility: hidden;
+}
 .login-sidebar {
     margin-top: 15px;
     margin-bottom: 15px;
@@ -194,7 +197,7 @@
     font-weight: bolder;
 }
 .sidebar-profile-row-container {
-    height: 200px;
+    max-height: 400px;
     border-bottom: 2px solid #F1F1F1;
 }
 .profile-picture {
@@ -237,7 +240,7 @@
 }
 
 .main-video-container {
-    marign-top: 50px;
+    marign-top: 200px;
     margin-left: 725px;
     height: 500px;
     width: 925px;

@@ -1,7 +1,7 @@
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {useState,useEffect} from "react";
-import {AiOutlineCloseCircle, AiOutlineEllipsis} from 'react-icons/ai'
+import {AiOutlineCloseCircle, AiOutlineEllipsis, AiOutlineHeart} from 'react-icons/ai'
 import Comment from "../components/js/comment";
 import {useCookies} from "react-cookie";
 import Specificvideoheader from "../components/js/specificvideoheader";
@@ -24,6 +24,7 @@ const Largeuservideo = () => {
 
     const [totalComms, setTotalComms] = useState(null)
     const [deletedComment, setDeletedComment] = useState(false)
+
 
 
 
@@ -97,15 +98,27 @@ const Largeuservideo = () => {
         }
      }
 
+     const handleLikeComment = async (video_id, comment_id) => {
+        try {
+            const response = await axios.put(`http://localhost:8000/like_comment/${video_id}/${comment_id}`)
+
+        } catch (error) {
+            console.log(error)
+
+        }
+     }
 
 
     useEffect(() => {
         handleLargeVideoRequest(user_id)
-    }, [video_id])
+    }, [])
 
     useEffect(()=> {
         handleGetComment(video_id)
-    }, [deletedComment, comment])
+    }, [comment, deletedComment])
+
+
+
 
 
 
@@ -132,23 +145,35 @@ const Largeuservideo = () => {
             </div>
 
         </div>
+
             <div className="profile-comments-container">
-                <Specificvideoheader profile_pic={profile_picture_url} username={username} numComments={totalComms} />
+
+                     <> <Specificvideoheader profile_pic={profile_picture_url} username={username} numComments={totalComms} />
+               </>
                 {comment? (
                 <div className="comment-wrapper">
+
                     {comment?.map((i) => (
                         <>
+                        <div className="icon-alignment-container">
                             <Comment comment={i?.comment}
                                      username={i?.username}
                                      profile_pic_url={i?.profile_pic}
                                      time={i?.time_stamp}
                             />
                             <div className="comment-options-container">
-                                <AiOutlineEllipsis className="comment-options-icon" onClick={event => handleDeleteComment(video_id, i.comment_id)}/>
+                                <AiOutlineEllipsis className="comment-options-icon-delete" onClick={event => handleDeleteComment(video_id, i.comment_id)}/>
+                                <AiOutlineHeart className="comment-options-icon" onClick={event => handleLikeComment(video_id, i.comment_id)}/>
+                                <p className="num-likes">
+                                    {i.likes}
+                                </p>
                             </div>
+                        </div>
+
                         </>
 
                     ))}
+
 
                     < div className="comment-form-wrapper">
                         <form className="comment-form" onSubmit={event => handleCommentPost(user_id,video_id)}>

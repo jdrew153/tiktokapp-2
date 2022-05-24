@@ -6,6 +6,8 @@ import Login from "./pages/login";
 import Userprofilepage from "./pages/userprofilepage";
 import './App.css';
 import Largeuservideo from "./pages/largeuservideo";
+import Followeduservideos from "./pages/followeduservideos";
+import Uploadvideo from "./pages/uploadvideo";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
       <Route path={"/login"} element={<Login/>}/>
       <Route path={"/user-page/:user_id"} element={<Userprofilepage/>}/>
       <Route path={"/:user_id/:video_id"} element={<Largeuservideo/>}/>
+      <Route path={"/followed-user/:username"} element={<Followeduservideos/>}/>
+      <Route path={"/upload-video/:user_id"} element ={<Uploadvideo/>}/>
     </Routes>
     </BrowserRouter>
   );

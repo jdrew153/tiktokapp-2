@@ -72,7 +72,8 @@ app.post('/signup', async (req,res) => {
             username,
             profile_pic_url,
             video,
-            videos:  []
+            videos:  [],
+            followed_users: []
         }
         const insertedUSer = await users.insertOne(data)
 
@@ -354,6 +355,208 @@ app.delete('/deletecomment/:video_id/:comment_id', async (req,res) => {
 
 
        res.send(response)
+
+
+    } finally {
+        await client.close()
+    }
+})
+
+app.put('/like_comment/:video_id/:comment_id', async (req,res) => {
+    const client = new MongoClient(uri)
+    const videoID = req.params.video_id
+    const commentId = parseFloat(req.params.comment_id)
+
+    try {
+        await client.connect()
+        const database = client.db('app-data')
+        const comments = database.collection('comments')
+        const query = {video_id: videoID}
+
+        const comment_array = await comments.findOne({
+            video_id: videoID,
+            comments: {
+                $elemMatch: {
+                    comment_id: commentId
+                }
+            }
+        })
+
+        const currentLikes = []
+
+        comment_array.comments.forEach(comment => {
+
+            if (comment.comment_id == commentId) {
+                const numlikes = comment.likes
+                currentLikes.push(numlikes)
+            }
+        })
+
+        const response = await comments.findOneAndUpdate(query, {
+
+            $set: {"comments.$[comment].likes": currentLikes[0] + 1}
+        }, {arrayFilters: [{"comment.comment_id": commentId}]})
+
+
+
+        res.send(response)
+
+
+    } finally {
+        await client.close()
+    }
+})
+
+app.put('/add-a-follower/:username/:user_id', async (req,res) => {
+    const client = new MongoClient(uri)
+    const username = req.params.username
+    const userID = req.params.user_id
+    console.log('you better hit only once')
+
+
+
+    try {
+        await client.connect()
+        const database = client.db("app-data")
+        const users = database.collection('users')
+        const query = { username: username }
+
+        const currentFollowers = await users.findOne(query).followed_users
+
+
+
+
+            const addedFollower = await users.findOneAndUpdate(query,
+
+                {
+                    $push: {
+                        followed_users: {
+                            user_id: userID
+                        }
+                    }
+                })
+            res.send(addedFollower)
+
+
+
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    finally {
+        await client.close()
+    }
+})
+
+app.put('/unfollow-a-user/:username/:user_id', async (req,res) => {
+    const client = new MongoClient(uri)
+    const username = req.params.username
+    const userId = req.params.user_id
+    console.log('deleted a follower')
+
+    try {
+        await client.connect()
+        const database = client.db('app-data')
+        const users = database.collection('users')
+        const query = {username: username}
+
+        const deletedFollower = await users.findOneAndUpdate(query, {
+            $pull: {
+                followed_users: {
+                    user_id: userId
+                }
+            }
+        })
+
+        res.send(deletedFollower)
+    } finally {
+        await client.close()
+    }
+})
+
+app.get('/get-followers/:username', async (req,res) => {
+    const client = new MongoClient(uri)
+    const username = req.params.username
+    try {
+        await client.connect()
+        const database = client.db('app-data')
+        const users = database.collection('users')
+        const query = { username: username }
+
+        const followers = await users.findOne(query)
+        const followed_users = followers?.followed_users
+
+        if (followed_users === null) {
+            res.send('follow some users :)')
+        } else {
+            res.send(followers?.followed_users)
+        }
+    } finally {
+        await client.close()
+    }
+})
+app.get('/get-all-followers/:username', async (req,res) => {
+    const client = new MongoClient(uri)
+    const username = req.params.username
+    try {
+
+            await client.connect()
+            const database = client.db('app-data')
+            const users = database.collection('users')
+
+
+
+            const specific_user = await users.findOne({
+                username: username
+            })
+
+            const followed_users = []
+
+            const followed_users_array = specific_user.followed_users
+
+            for (let i=0; i < followed_users_array.length; i++) {
+               followed_users.push(followed_users_array[i].user_id)
+            }
+            const followed_user_videos = []
+
+
+
+            for (let j =0; j < followed_users.length; j++) {
+                const users = database.collection('users')
+                const query = {user_id : followed_users[j] }
+
+                const ret_users = await users.findOne(query)
+
+                followed_user_videos.push(ret_users)
+
+
+            }
+            res.send(followed_user_videos)
+
+    } finally {
+        await client.close()
+    }
+
+})
+
+app.put('/upload-video/:user_id', async (req,res) => {
+    const client = new MongoClient(uri)
+    const userID = req.params.user_id
+
+    const { source, caption } = req.body
+
+    try {
+        await client.connect()
+        const database = client.db('app-data')
+        const users = database.collection('users')
+
+        let videoDataStruct = {
+            video_id: Math.random(),
+            source: source,
+            caption: caption
+        }
+
 
 
     } finally {

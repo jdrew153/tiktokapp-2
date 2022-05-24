@@ -35,10 +35,10 @@ const Suggestedaccounts = () => {
                           <div className="sidebar-profile-account-description">
                               <div className="description">
                               <p className="username">
-                                  {account.first_name}
+                                  {account.username}
                               </p>
                               <p className="gender">
-                                  {account.gender}
+                                  {account.profile_description}
                               </p>
                               </div>
                           </div>

@@ -1,6 +1,14 @@
 import "../styles/components.css"
+import axios from "axios";
+import {useCookies} from "react-cookie";
+import {useParams} from "react-router-dom";
 
-const Userprofileheader = ( user ) => {
+
+
+const Userprofileheader = (user) => {
+
+
+
     return (
 
         <div className="user-profile-header">
@@ -16,9 +24,7 @@ const Userprofileheader = ( user ) => {
                     <h2 className="header-profile-description">
                         {user.profile_description}
                     </h2>
-                        <button className="follow-button" onClick={event => console.log('hit')}>
-                            Follow
-                        </button>
+
 
                 </div>
         </div>

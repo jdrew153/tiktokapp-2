@@ -15,8 +15,8 @@
 .individual-img {
     height: 100%;
     width: 100%;
-    min-height: 150px;
-
+    min-height: 300px;
+    min-width: 200px;
     object-fit: cover;
     border-radius: 5px;
 
@@ -30,7 +30,8 @@
     padding-top: 100px;
 }
 .header-header-container {
-    margin-top: 10px;
+    margin-top: 5px;
+    position: relative;
 
 }
 .user-profile-header {
@@ -61,6 +62,18 @@
     color: #FFFF;
     font-weight: bold;
     cursor: pointer;
+    position: absolute;
+}
+.message-button {
+    height: 40px;
+    width: 200px;
+    border: 2px solid #EF2950;
+    border-radius: 10px;
+    background-color: #FFFF;
+    color: #EF2950;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
 }
 
 .followers-options-container {
@@ -166,7 +179,7 @@
 
 .main-comment-container {
     display: flex;
-    width: 100%;
+    width: 80%;
     max-height: 100px;
     margin-bottom: 25px;
     margin-top: 10px;
@@ -175,13 +188,24 @@
 .comment-options-container {
    margin-right: 10px;
     margin-top: 30px;
+    display: flex;
 }
 .comment-options-icon {
     height: 20px;
     width: 20px;
+    margin: 2px;
 }
 .comment-options-icon:hover {
     cursor: pointer;
+}
+.comment-options-icon-delete {
+    height: 20px;
+    width: 20px;
+    margin: 2px
+
+}
+.comment-options-icon-delete:hover {
+    visibility: visible;
 }
 .comment-username-wrapper {
     width: 100%;
@@ -227,10 +251,12 @@
 
 .comment-wrapper {
     overflow: hidden auto;
-
     width: 100%;
     max-height: 800px;
     background-color: #F1F1F1;
+}
+.icon-alignment-container {
+    display: flex;
 }
 .specific-video-profile-header {
     max-height: 100px;
@@ -309,4 +335,9 @@
     margin-left: 4px;
     opacity: 0.8;
 }
+.num-likes {
+    margin: 2px;
+}
+
+
 
