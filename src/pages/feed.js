@@ -1,6 +1,4 @@
-
 import Videocard from "../components/js/videocard";
-import {useNavigate} from "react-router-dom";
 import {useCookies, Cookies} from "react-cookie";
 import Header from "../components/js/header";
 import Sidebar from "../components/js/sidebar";
@@ -32,9 +30,6 @@ const Feed = () => {
                    <Header/>
                     <Sidebar loggedIn={loggedIn}/>
                     <Videocard/>
-
-
-
                 </>
 
     )

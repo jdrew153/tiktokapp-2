@@ -4,6 +4,7 @@ import {useState, useEffect} from "react";
 import Sidebar from "../components/js/sidebar";
 import Header from "../components/js/header";
 import axios from "axios";
+import {queries} from "@testing-library/react";
 
 const Followeduservideos = () => {
     const [cookies, setCookies, removeCookies] = useCookies()
@@ -14,8 +15,11 @@ const Followeduservideos = () => {
 
     const username = cookies.username
 
-    function getRandomNums(max) {
-        return Math.random() * (max)
+    function getRandomNums(max, min) {
+        min = Math.ceil(min)
+        max = Math.floor(max)
+        return Math.floor(Math.random() * (max - min) + min)
+
     }
 
     const handleGetFollowedVideos = async (username) => {
@@ -23,10 +27,24 @@ const Followeduservideos = () => {
             const response = await axios.get(`http://localhost:8000/get-all-followers/${username}`)
             setUsers(response.data)
 
+            const vidArray = []
             response.data.forEach((user) =>
 
-                setRandVideo(user.videos.length - 1)
+                vidArray.push(user.videos)
             )
+
+            const randIndx = getRandomNums(vidArray.length, 0)
+
+            response.data.forEach((x) => {
+                    if (randIndx > x.videos.length) {
+                        setRandVideo(0)
+                    } else {
+                        setRandVideo(randIndx)
+                    }
+            }
+
+            )
+
 
 
 
@@ -41,8 +59,9 @@ const Followeduservideos = () => {
     }
     useEffect(() => {
         handleGetFollowedVideos(username)
-        handleisLoggedIn()
+        handleisLoggedIn(username)
     }, [])
+    console.log(randVideo)
 
 
 
@@ -54,7 +73,7 @@ const Followeduservideos = () => {
         <div>
             {users.map((i) =>
                 <a href={`/user-page/${i.user_id}`}>
-                <Videocard profile_description={i.profile_description} profile_pic_url={i.profile_pic_url} video={i.videos[0].source}/>
+                <Videocard profile_description={i.profile_description} profile_pic_url={i.profile_pic_url} video={i.videos[randVideo].source}/>
                 </a>
             )}
         </div>

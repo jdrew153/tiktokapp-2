@@ -53,9 +53,11 @@ const Header = () => {
                 </div>
                 <div className="buttons-container">
                     <div className="upload-button-container">
+                        <a href={`/upload-video/${username}`}>
                         <button className="upload-button">
                             Upload
                         </button>
+                        </a>
                     </div>
                     {(loggedIn === true) ?
                         (<div className="login-button-container">
