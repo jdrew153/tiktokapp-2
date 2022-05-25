@@ -27,23 +27,6 @@ const Followeduservideos = () => {
             const response = await axios.get(`http://localhost:8000/get-all-followers/${username}`)
             setUsers(response.data)
 
-            const vidArray = []
-            response.data.forEach((user) =>
-
-                vidArray.push(user.videos)
-            )
-
-            const randIndx = getRandomNums(vidArray.length, 0)
-
-            response.data.forEach((x) => {
-                    if (randIndx > x.videos.length) {
-                        setRandVideo(0)
-                    } else {
-                        setRandVideo(randIndx)
-                    }
-            }
-
-            )
 
 
 
