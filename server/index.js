@@ -88,66 +88,107 @@ app.post('/signup', async (req,res) => {
     }
 })
 
-app.put('/like:username', async (req, res) => {
+app.put('/like/:username/:video_id', async (req, res) => {
     const client = new MongoClient(uri)
-    const userID = req.params.username
+    const username = req.params.username
+    const videoID = parseFloat(req.params.video_id)
+    console.log('hit')
 
     try {
         await client.connect()
         const database = client.db("app-data")
         const users = database.collection("users")
-        const query = {user_id: userID}
-        const currentLikes = await users.findOne({ user_id: userID })
-        const options = { upsert: true }
+        const query = {username: username}
+        const user = await users.findOne(query)
 
-        const updateDoc = {
-            $set: {
-                likes: currentLikes.likes + 1
+        let currentLikes = null
+        user.videos.forEach((video) => {
+            if (video.video_id === videoID) {
+                currentLikes = video.likes
+            } else {
+                currentLikes = 0
             }
-        }
-        const result = await users.updateOne(query, updateDoc, options)
-        if (result) {
-            res.status(201).send(result)
-        } else {
-            res.status(409).send('fuck')
-        }
+        })
+
+       const retLiked = await users.findOneAndUpdate({
+           username: username,
+           videos: {
+               $elemMatch: {video_id: videoID}
+           }
+       }, {
+           $set: {
+               "videos.$.likes": currentLikes + 1
+           }
+       })
+
+        const addedLike = await users.findOneAndUpdate( {username: username}, {
+            $push: {
+                liked_videos: videoID
+            }
+        })
+
+        res.send(retLiked)
 
     } finally {
         await client.close()
     }
 })
-app.put('/unlike:username', async (req, res) => {
+app.put('/unlike/:username/:video_id', async (req, res) => {
     const client = new MongoClient(uri)
-    const userID = req.params.username
+    const username = req.params.username
+    const videoID = parseFloat(req.params.video_id)
+    console.log('hit')
 
     try {
         await client.connect()
         const database = client.db("app-data")
         const users = database.collection("users")
-        const query = {user_id: userID}
-        const currentLikes = await users.findOne({ user_id: userID })
-        const updateDoc = {
-            $set: {
-                likes: currentLikes.likes - 1
+        const query = {username: username}
+        const user = await users.findOne(query)
+
+        let currentLikes = null
+        user.videos.forEach((video) => {
+            if (video.video_id === videoID) {
+                currentLikes = video.likes
+            } else {
+                currentLikes = 0
             }
-        }
+        })
 
-
-        const result = await users.updateOne(query, updateDoc)
-        if (result) {
-            res.status(201).send(result)
+        if (currentLikes > 0) {
+            const retUnLiked = await users.findOneAndUpdate({
+                username: username,
+                videos: {
+                    $elemMatch: {video_id: videoID}
+                }
+            }, {
+                $set: {
+                    "videos.$.likes": currentLikes - 1
+                }
+            })
+            res.send(retUnLiked)
         } else {
-            res.status(409).send('fuck')
+            res.send('nope')
         }
+
+
+
+
+
+
+
+
+
+
 
     } finally {
         await client.close()
     }
 })
-app.put('/liked_videos/:user_id/:video_name', async (req, res) => {
+app.put('/liked_videos/:user_id/:video_id', async (req, res) => {
     const client = new MongoClient(uri)
     const userID = req.params.user_id
-    const video = req.params.video_name
+    const videoID = req.params.video_id
     console.log(req.params)
     console.log("hit")
 
@@ -159,7 +200,7 @@ app.put('/liked_videos/:user_id/:video_name', async (req, res) => {
         const updateDoc = {
             $push: {
 
-                liked_videos: video
+                liked_videos: videoID
             }
         }
         const result = await users.updateOne(query, updateDoc)
@@ -170,6 +211,24 @@ app.put('/liked_videos/:user_id/:video_name', async (req, res) => {
             res.status(409).send('fuck')
         }
 
+    } finally {
+        await client.close()
+    }
+})
+app.get('/liked-videos/:username', async (req,res) =>{
+    const client = new MongoClient(uri)
+    const username = req.params.username
+    try {
+        await client.connect()
+        const database = client.db('app-data')
+        const users = database.collection('users')
+        const query = {
+            username: username
+        }
+
+        const retLikedVideos = await users.findOne(query)
+
+        res.send(retLikedVideos.liked_videos)
     } finally {
         await client.close()
     }
@@ -491,6 +550,7 @@ app.get('/get-followers/:username', async (req,res) => {
             res.send('follow some users :)')
         } else {
             res.send(followers?.followed_users)
+
         }
     } finally {
         await client.close()
@@ -532,6 +592,11 @@ app.get('/get-all-followers/:username', async (req,res) => {
 
 
         }
+
+        const randVideosArray = []
+
+
+
         res.send(followed_user_videos)
 
     } finally {
@@ -553,16 +618,20 @@ app.put('/upload-video/:username', async (req,res) => {
         const users = database.collection('users')
         const query = { username: username }
 
+        let today = new Date();
+
+        let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
 
         const UpdateVideoArray = {
 
             $push: {
                 videos: {
-
                     video_id: Math.random(),
                     source: videoSource,
-                    caption: videoCaption
-
+                    caption: videoCaption,
+                    likes: 0,
+                    upload_time: date
                 }
             }
         }

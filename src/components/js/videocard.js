@@ -4,10 +4,33 @@ import { BsChatDotsFill} from "react-icons/bs"
 import { TiArrowForward } from "react-icons/ti"
 import axios from "axios";
 import { useEffect, useState} from "react";
+import videocard from "./videocard";
 
 
 
-const Videocard = ({ profile_pic_url, profile_description, video }) => {
+const Videocard = ({ profile_pic_url, profile_description, video, username, user_id, video_id, postusername, numLikes,usersLikedVids }) => {
+
+    const [liked, setLiked] = useState(false)
+
+    const handleLike = async (postusername, video_id) => {
+        try {
+            const response = await axios.put(`http://localhost:8000/like/${postusername}/${video_id}`)
+            setLiked(true)
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const handleUnlike = () => {
+        setLiked(false)
+        console.log(liked)
+    }
+
+    useEffect(() => {
+
+    }, [liked])
 
     return (
        <>
@@ -19,11 +42,16 @@ const Videocard = ({ profile_pic_url, profile_description, video }) => {
                        <div className="actual-video-container"
                             >
                            <div className="video-tags-container">
+                               <a href={`/user-page/${user_id}`}>
+                               <h3>
+                                   {username}
+                               </h3>
                                <div className="tag-container">
                                    <p className="tags">
                                        {profile_description}
                                    </p>
                                </div>
+                               </a>
                                <div className="video-likes-container"
                                >
                                    <video className="main-video"
@@ -33,6 +61,16 @@ const Videocard = ({ profile_pic_url, profile_description, video }) => {
                                           onMouseOut={event => event.target.pause()}
                                           src={video}
                                    />
+                                   <div className="likes-container">
+                                       {(video_id in usersLikedVids) ? (<AiFillHeart className="icon-likes-red" onClick={event => handleUnlike}/> ) : (
+                                       <AiFillHeart className="icon-likes" onClick={event => handleLike(postusername, video_id)}/>)}
+                                       <p>
+                                           {numLikes}
+                                       </p>
+                                   </div>
+                                   <div className="comments-container">
+                                       <BsChatDotsFill className="icon-comment"></BsChatDotsFill>
+                                   </div>
                                </div>
                            </div>
                        </div>

@@ -343,15 +343,24 @@ a {
 .num-likes {
     margin: 2px;
 }
+.followed-user-videos-container {
+    margin-top: 10vh;
+    position: absolute;
+    z-index: -1;
 
+
+}
 .upload-video-container {
-
+    margin-top: 10vh;
     position: absolute;
 }
 .upload-video-form {
     width: 100%;
     height: 100%;
     margin-left: 40vw;
+
+}
+.video-likes-container {
 
 }
 
