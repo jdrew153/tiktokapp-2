@@ -96,8 +96,8 @@ const Userprofilepage =  () => {
     useEffect(() => {
         getFollowers(username)
         handleGetLikedVideos(user_id)
-    }, [userVideosSelected])
-    console.log(likedVideos)
+    }, [])
+    console.log(followedUserComparisonArray)
 
 
 
@@ -124,7 +124,7 @@ const Userprofilepage =  () => {
         likes={"300.0B"}
                            first_name = {profile?.first_name}
         />
-            {!(profile?.username == username) ? (followedUserComparisonArray.includes(user_id)? <> <button className="message-button" >
+            {!(profile?.username === username) ? (followedUserComparisonArray.includes(user_id)? <> <button className="message-button" >
                     Message
                 </button>  <BsPeople onClick={event => handleDeleteFollower(username, user_id)}/> </>: <button className="follow-button" onClick={event => handleFollow(username, user_id)}>
                 Follow

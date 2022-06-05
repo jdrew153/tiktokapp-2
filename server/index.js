@@ -1053,7 +1053,7 @@ app.put('/send-a-message/:username/:sender_username', async (req,res) => {
     const client = new MongoClient(uri)
     const username = req.params.username
     const senderusername = req.params.sender_username
-    const {profile_pic_url, message} = req.body
+    const {profile_pic_url, message, selectedUserToMessageProfilePic} = req.body
 
     try {
         await client.connect()
@@ -1098,10 +1098,10 @@ app.put('/send-a-message/:username/:sender_username', async (req,res) => {
 
             const newConversationDataStruct = {
                 "sender_username": senderusername,
-                "profile_pic_url": profile_pic_url,
+                "profile_pic_url": selectedUserToMessageProfilePic,
                 "messages": [
                     {
-                        "sender_username": senderusername,
+                        "sender_username": username,
                         "profile_pic_url": profile_pic_url,
                         "message": message,
                         "time_stamp": dateTime,
@@ -1128,7 +1128,7 @@ app.put('/send-a-message/:username/:sender_username', async (req,res) => {
 
             const newMessage = await messages.insertOne(newMessageDataStruct)
             res.send(newMessage)
-            console.log('new message')
+            console.log('new user message')
 
         } else if (!(existingConversation === null)) {
             const updateMessage = await messages.findOneAndUpdate({
@@ -1216,7 +1216,7 @@ app.put('/send-a-message/:username/:sender_username', async (req,res) => {
 
             const newMessage = await messages.insertOne(newReceivingMessageDataStruct)
             res.send(newMessage)
-            console.log('new message')
+            console.log('new receiving message')
 
         } else if (!(existingReceivingUserConversation === null)) {
             const updateMessage = await messages.findOneAndUpdate({
@@ -1238,10 +1238,10 @@ app.put('/send-a-message/:username/:sender_username', async (req,res) => {
             const createNewConversation = await messages.findOneAndUpdate({
                 username: senderusername
             }, { $push: {
-                    conversations: newConversationDataStruct
+                    conversations: newReceivingConversationDataStruct
                 }
             })
-            console.log('created new conversation')
+            console.log('created new receiving conversation')
             res.send(createNewConversation)
         }
 
