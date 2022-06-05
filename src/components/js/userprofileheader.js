@@ -22,7 +22,7 @@ const Userprofileheader = (user) => {
                         {user.username}
                     </h2>
                     <h2 className="header-profile-description">
-                        {user.profile_description}
+                        {user.first_name}
                     </h2>
 
 
@@ -56,7 +56,7 @@ const Userprofileheader = (user) => {
             </div>
             <div className="user-profile-signature">
                 <h2 className="signature-text">
-                    I like Harry not Josh
+                    {user.profile_description}
                 </h2>
             </div>
 

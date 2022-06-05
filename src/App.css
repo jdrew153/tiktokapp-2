@@ -54,9 +54,26 @@
 }
 .upload-button-container {
     padding: 10px;
+    height: 20px;
+    border: 2px solid #F1F1F1;
+    display: flex;
+    margin-top: 8px;
 }
+.plus-button-icon {
+    height: 15px;
+    width: 15px;
+    opacity: 0.8;
+}
+.notifications-container {
+    margin: 18px;
+}
+.notifications-icon {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+
 .upload-button {
-    height: 35px;
     width: 75px;
     border: hidden;
     background-color: #FFFF;
@@ -93,11 +110,13 @@
 
 .sidebar-container {
     height: 100vh;
-    margin-left: 50px;
-    width: 300px;
+    padding-left: 20px;
+    left: 0;
     margin-top: 5vw;
     position: fixed;
     overflow: hidden auto;
+    z-index: 2;
+    background-color: #FFFFFF;
 
 }
 .page-navigator-container {
@@ -243,7 +262,7 @@
 .main-video-container {
     marign-top: 200px;
     margin-left: 725px;
-    height: 500px;
+    height: 450px;
     width: 925px;
     display: flex;
     border-bottom: 2px solid #F1F1F1;
@@ -258,22 +277,32 @@
     margin-top: 15px;
 }
 .tag-container {
-    height: 65px;
-    margin-top: 25px;
+    max-height: 35px;
+    overflow: hidden;
+}
+.username-container {
+   margin: 10px;
 }
 .tags {
     margin-left: 18px;
 }
 .main-video {
-    width: 75%;
-    height: 60%;
+
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 15px;
+    margin-top: 15px;
+    object-fit: fill;
+}
+.dummy-time-tracking-div {
     min-width: 100px;
     min-height: 80px;
-    max-width: 700px;
-    max-height: 500px;
+    max-width: 500px;
     border-radius: 15px;
     margin-top: 15px;
 }
+
+
 .video-likes-container {
     display: flex;
     z-index: -1;
@@ -288,11 +317,17 @@
     height: 40px;
     width: 40px;
     border-radius: 40px;
-    position: relative;
+    position: absolute;
     margin-left: 10px;
+    bottom: 30%;
+
+}
+.specific-video-options-wrapper {
+    position: relative;
 }
 .likes-container:hover {
     background-color: lightgrey;
+    cursor: pointer;
 }
 .likes-icon {
     height: 35px;
@@ -305,6 +340,7 @@
     width: 25px;
     margin-left: 7px;
     margin-top: 8px;
+
 }
 .icon-likes-red{
     height: 25px;
@@ -324,8 +360,8 @@
     width: 40px;
     border-radius: 40px;
     position: relative;
-    margin-left: 10px;
-    margin-top: 28px;
+    margin-left: 5px;
+    margin-top: 10px;
 }
 .comments-container:hover {
     background-color: lightgrey;
@@ -339,6 +375,12 @@
 .number-comments {
     font-size: 9px;
     margin-left: 12px;
+}
+.number-comments-text {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 16px;
+    opacity: 0.8;
 }
 
 .shares-container {

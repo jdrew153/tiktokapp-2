@@ -13,25 +13,24 @@ const Feed = () => {
 
     const username = cookies.username
 
-    const userLoggedIn = (username) => {
-        if (username) {
-            setLoggedIn(true)
-        }
-    }
 
-
-    useEffect(() => {
-        userLoggedIn(username)
-    }, [username])
+    // const userLoggedIn = (username) => {
+    //     if (username) {
+    //         setLoggedIn(true)
+    //     }
+    // }
+    //
+    //
+    // useEffect(() => {
+    //     userLoggedIn(username)
+    // }, [username])
 
 
     return (
                 <>
                    <Header/>
-                    <Sidebar loggedIn={loggedIn}/>
-                    <Videocard/>
+                    <Sidebar/>
                 </>
-
     )
 }
 

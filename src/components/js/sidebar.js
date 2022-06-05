@@ -8,7 +8,7 @@ import {useState} from "react";
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 
-const Sidebar = ({ loggedIn }) => {
+const Sidebar = () => {
 
     const [cookies, setCookie, removeCookie] = useCookies(null)
     const username = cookies.username
@@ -24,7 +24,7 @@ const Sidebar = ({ loggedIn }) => {
 
     }
     const handleLogOut = () => {
-        loggedIn = false
+        removeCookie('username')
         navigator('/login')
         window.location.reload()
 
@@ -61,7 +61,7 @@ const Sidebar = ({ loggedIn }) => {
                 </div>
 
                 <div className="login-sidebar-container">
-                    {loggedIn ? (<div className="login-text-container">
+                    {username ? (<div className="login-text-container">
                         <p>
                             Keep looking at videos pussy
 
@@ -72,7 +72,7 @@ const Sidebar = ({ loggedIn }) => {
                         </p>
                     </div>)}
 
-                    {loggedIn ? (<div className="login-button-sidebar-container-hidden">
+                    {username ? (<div className="login-button-sidebar-container-hidden">
                         <button className="login-sidebar" onClick={handleLogInRedirect}>
                             Log Out
                         </button>
@@ -129,7 +129,7 @@ const Sidebar = ({ loggedIn }) => {
                     <Suggestedaccounts/>
                 </div>
             </div>
-            {loggedIn ?
+            {username ?
                 ( <div className="test">
 
                     </div>

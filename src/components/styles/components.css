@@ -16,6 +16,7 @@ a {
 .individual-img-wrapper {
     display: flex;
     justify-content: center;
+    position: relative;
 }
 .individual-img {
     height: 100%;
@@ -25,7 +26,33 @@ a {
     object-fit: cover;
     border-radius: 5px;
 
+
 }
+.mini-card-views {
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+#play-icon {
+    z-index: 3;
+    height: 90px;
+    width: 50px;
+    position: absolute;
+    color: #F1F1F1;
+    bottom: 0;
+    left: 5px;
+}
+.play-text {
+    color: #F1F1F1;
+
+    font-size: 20px;
+    font-weight: bolder;
+    padding-left: 55px;
+}
+
 .mini-video-card-caption{
     display: flex;
     justify-content: flex-start;
@@ -110,6 +137,7 @@ a {
     display: flex;
     align-items: flex-end;
     margin-top: 5px;
+    opacity: 0.7;
 }
 
 .user-following-container {
@@ -122,8 +150,30 @@ a {
 .signature-text {
     font-weight: 400;
     font-size: 16px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    opacity: 0.7;
 }
 
+.grid-selection-container {
+    display: flex;
+    flex-direction: row;
+}
+.video-selection {
+    width: 200px;
+    height: 50px;
+    border-bottom: 2px solid black;
+    margin-bottom: 15px;
+    font-weight: bolder;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.selection-text {
+    margin: 0;
+    padding-bottom: 5px;
+}
 .specific-video-background {
    width: 100vw;
     height: 100vh;
@@ -133,6 +183,24 @@ a {
     position: relative;
     height: 100vh;
     width: 100vw;
+}
+.video-selection-faint {
+    width: 200px;
+    height: 50px;
+    border-bottom: 2px solid black;
+    margin-bottom: 15px;
+    font-weight: bolder;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    margin-right: 5px;
+    opacity: 0.6;
+}
+
+.selection-text-faint {
+    margin: 0;
+    padding-bottom: 5px;
+    opacity: 0.6;
 }
 .large-video {
     top: 0;
@@ -351,18 +419,334 @@ a {
 
 }
 .upload-video-container {
-    margin-top: 10vh;
+
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    background-color: #F1F1F1;
+    width: 100vw;
+}
+.upload-modal-container {
+    width: 1500px;
+    background-color: #FFFFFF;
+    left: 10px;
+    position: absolute;
+    height: 80vh;
+    margin: 100px;
+    border-radius: 15px;
+}
+.upload-modal-header-container {
+    margin-left: 15px;
+}
+.upload-video-header {
+    margin: 0px;
+    padding-top: 50px;
+}
+.upload-video-subheading {
+    margin: 0px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: lighter;
+    color: grey;
+}
+.upload-options-container {
+    display: flex;
+}
+.upload-input-container {
+    margin-left: 20px;
+}
+.placeholder-drag-drop-input {
+    margin-left: 20px;
+    height: 400px;
+    width: 200px;
+    border: 5px dashed #50525A;
     position: absolute;
 }
+#video-source {
+    width: 500px;
+    height: 40px;
+    border: 2px solid #F1F1F1;
+    border-radius: 10px;
+}
+#video-caption {
+    width: 500px;
+    height: 40px;
+    border: 2px solid #F1F1F1;
+    border-radius: 10px;
+}
+.comment-input-container {
+    width: 500px;
+
+
+}
+.comment-input {
+    margin-bottom: 5px;
+    margin-top: 0px;
+    font-size: 14px;
+    color: #50525A;
+    right: 200px;
+}
+.placeholder-image {
+    max-height: 400px;
+    max-width: 500px;
+    border-radius: 5px;
+    border: 2px dashed #868686;
+    margin-left: 10px;
+}
+
 .upload-video-form {
     width: 100%;
     height: 100%;
     margin-left: 40vw;
+}
+
+/*** notification center ******/
+.main-notification-modal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #FFFFFF;
+    margin-top: 8px;
+    position:absolute;
+    min-height: 600px;
+
+    border: 2px solid #868686;
+}
+.notification-modal-header-wrapper {
+    position: relative;
+    width: 450px;
+}
+.notification-modal-header {
+    margin-left: 10px;
+    font-size: 28px;
+    font-weight: bolder;
+}
+.notification-type-container {
+    display: flex;
+    flex-direction: row;
+}
+.all-comments {
+    font-weight: bolder;
+    background-color: #F1F1F1;
+    border-radius: 10px;
+    color: black;
+    height: 20px;
+    width: 45px;
+    margin-left: 20px;
+    padding: 5px;
+    text-align: center;
+}
+
+/** notification bar component */
+.notification-bar-wrapper {
+    display: flex;
+    margin-top: 20px;
 
 }
-.video-likes-container {
+
+/*** not acknowledged notification **/
+.notification-bar-wrapper-not-acknowledged {
+    display: flex;
+    background-color: #F1F1F1;
+}
+.dummy-div {
+    cursor: pointer;
+    margin-top: 10px;
+}
+.notification-bar {
+    min-height: 40px;
+    overflow: scroll;
+}
+.profile-picture-notification {
+    height: 60px;
+    width: 60px;
+    padding-top: 10px;
+    border-radius: 30px;
+     margin-left: 15px;
+    margin-right: 10px;
 
 }
+.notification-username-container {
+    width: 20px;
+    height: 10px;
+    font-weight: bolder;
+    margin: 0;
+}
+.type-notification-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+.notification-text {
+    max-height: 100px;
+    opacity: 0.7;
+
+}
+.small-video-card {
+    margin-left: 100px;
+}
+.small-video {
+    height: 100px;
+    width: 80px;
+    border-radius: 5px;
+    object-fit: fill;
+    margin: 0;
+}
+.specific-notification-wrapper {
+    margin-left: 30px;
+}
+
+.other-dummy-div {
+    width: 150px;
+}
+
+/** messaging **/
+.messaging-container {
+    background-color: #F1F1F1;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+.messaging-header-container {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    padding-left: 10px;
+
+}
+.new-messages-icon-container {
+    display: flex;
+    justify-content: flex-end;
+    min-width: 250px;
+    max-width: 500px;
+}
+.new-messages-icon {
+    height: 20px;
+    width: 20px;
+    margin: 15px;
+}
+.new-messages-icon: hover {
+    height: 20px;
+    width: 20px;
+    margin: 15px;
+    color: #868686;
+}
+
+.sender-messaging-modal {
+    background-color: #FFFFFF;
+    height: 80vh;
+    width: 500px;
+    margin-left: 20px;
+    position: relative;
+    border-radius: 10px;
+    margin-top: 110px;
+}
+.messages-modal {
+    background-color: #FFFFFF;
+    height: 80vh;
+    width: 85vw;
+    position: relative;
+    margin-left: 25px;
+    border-radius: 10px;
+    margin-top: 110px;
+    margin-right: 60px;
+}
+.singular-user-message-container {
+    min-height: 80px;
+    width: 100%;
+    background-color: #FFFFFF;
+}
+.singular-user-message-container-wrapper:hover {
+    background-color: #F1F1F1;
+}
+.messages-container {
+   height: 100%;
+    max-height: 589px;
+    position: relative;
+    overflow: scroll;
+}
+.message-time-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 20px;
+    margin-top: 5px;
+}
+.time-stamp {
+    font-size: 16px;
+    color: #868686;
+    margin: 0;
+
+}
+.specific-user-message {
+    display: flex;
+}
+
+.specific-user-message-receiving {
+    display: flex;
+    justify-content: flex-end;
+}
+.actual-message-bubble {
+    background-color: #FFFFFF;
+    border: 1px solid #868686;
+    font-size: 18px;
+    border-radius: 10px;
+    margin-left: 5px;
+    display: flex;
+    height: auto;
+    width: auto;
+    justify-content: center;
+    max-width: 250px;
+    min-width: 50px;
+    max-height: 300px;
+}
+.actual-message-text {
+    margin: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.singular-user-message-header-wrapper {
+    margin-top: 15px;
+    padding-top: 10px;
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    max-height: 150px;
+    width: 100%;
+    border-bottom: 2px solid #F1F1F1;
+}
+
+.specific-header-username {
+    margin: 5px;
+}
+.messaging-input-wrapper {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 10px;
+}
+#messaging-input-form {
+    width: 100%;
+    border-top: 2px solid #F1F1F1;
+}
+#message {
+    height: 50px;
+    width: 95%;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    border-radius: 15px;
+    padding-left: 10px;
+    border: none;
+    background-color: #F1F1F1;
+    position: relative;
+}
+
+
+
 
 
 

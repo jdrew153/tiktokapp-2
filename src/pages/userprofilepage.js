@@ -20,6 +20,12 @@ const Userprofilepage =  () => {
     const { user_id } = useParams()
     const [loggedIn, setLoggedIn] = useState(false)
 
+    //for selecting users videos or the users liked videos
+
+    const [userVideosSelected, setUserVideosSelected] = useState(true)
+    const [likedVideos, setLikedVideos] = useState([])
+
+
 
     const userLoggedIn = (username) => {
         if (username) {
@@ -70,16 +76,29 @@ const Userprofilepage =  () => {
         followedUserComparisonArray.push(follower.user_id)
     })
 
+    const handleGetLikedVideos = async (user_id) => {
+        try {
+            const response = await axios.get(`http://localhost:8000/users-liked-videos/${user_id}`)
+            setLikedVideos(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         handleProfileRequest(user_id)
         getFollowers(username)
         userLoggedIn(username)
 
-    }, [followed])
+
+    }, [username, user_id])
 
     useEffect(() => {
         getFollowers(username)
-    }, [followedUserComparisonArray])
+        handleGetLikedVideos(user_id)
+    }, [userVideosSelected])
+    console.log(likedVideos)
+
 
 
 
@@ -103,6 +122,7 @@ const Userprofilepage =  () => {
         followed={profile?.followed_users.length}
         followers={"45"}
         likes={"300.0B"}
+                           first_name = {profile?.first_name}
         />
             {!(profile?.username == username) ? (followedUserComparisonArray.includes(user_id)? <> <button className="message-button" >
                     Message
@@ -113,19 +133,60 @@ const Userprofilepage =  () => {
             </button>)}
         </div>
 
-        <div className="three-column-container">
-        <div className="mini-video-card-grid-wrapper">
-        <div className="grid-container">
-    {profile.videos.map((video) => <a href={`/${profile.user_id}/${video.video_id}`}>
-        <Minivideocard image_url={video?.source} video_caption={video?.caption}/>
-        </a>)
+            {(userVideosSelected) ? (<> <div className="grid-selection-container">
+                <div className="video-selection">
+                    <h3 className="selection-text">
+                        Videos
+                    </h3>
+                </div>
+                <div className="video-selection-faint" onClick={event => setUserVideosSelected(false)} >
+                    <h3 className="selection-text-faint">
+                        Liked
+                    </h3>
+                </div>
 
-    }
+            </div>  <div className="three-column-container">
+                <div className="mini-video-card-grid-wrapper">
+                    <div className="grid-container">
+                        {profile.videos.map((video) => <a href={`/${profile.user_id}/${video.video_id}`}>
+                            <Minivideocard image_url={video?.source} video_caption={video?.caption} views={video.views}/>
+                        </a>)
 
-        </div>
+                        }
 
-        </div>
-        </div>
+                    </div>
+
+                </div>
+            </div> </>) : (<> <div className="grid-selection-container">
+                <div className="video-selection-faint" onClick={event => setUserVideosSelected(true)}>
+                    <h3 className="selection-text-faint">
+                        Videos
+                    </h3>
+                </div>
+                <div className="video-selection">
+                    <h3 className="selection-text">
+                        Liked
+                    </h3>
+                </div>
+
+                </div>  <div className="three-column-container">
+                <div className="mini-video-card-grid-wrapper">
+                <div className="grid-container">
+            {(likedVideos.length > 0) ? (likedVideos.map((video) =>
+                <Minivideocard image_url={video.source} video_caption={video.caption} views={video?.views}/>
+            )) : (<div> Users Hasn't Liked Any videos </div>)
+
+            }
+
+                </div>
+
+                </div>
+                </div>
+               </> )
+
+            }
+
+
         </div>
         </>
     } </>

@@ -18,6 +18,7 @@ const Largeuservideo = () => {
     const [firstComment, setFirstcomment] = useState(null)
     const [commentPosted, setCommentPosted] = useState(false)
     const [cookies, setCookies, removeCookies] = useCookies()
+    const [likes, setLikes] = useState(null)
 
     const [username, setUsername] = useState(null)
     const [profile_picture_url, setProfile_Picture_URL] = useState(null)
@@ -42,6 +43,7 @@ const Largeuservideo = () => {
         video_array.forEach((video) => {
           if (video.video_id == video_id) {
               setLargeVideo(video.source)
+              setLikes(video.likes)
           } else {
               console.log('not the video youre looking for')
           }
@@ -87,9 +89,9 @@ const Largeuservideo = () => {
         }
     }
 
-     const handleDeleteComment = async (video_id, comment_id) => {
+     const handleDeleteComment = async (video_id, comment_id, user_id) => {
         try {
-            const response = await axios.delete(`http://localhost:8000/deletecomment/${video_id}/${comment_id}`, {data: {comment_id: comment_id}})
+            const response = await axios.delete(`http://localhost:8000/deletecomment/${video_id}/${comment_id}/${user_id}`, {data: {comment_id: comment_id}})
             console.log(response.data)
             setDeletedComment(true)
 
@@ -111,15 +113,11 @@ const Largeuservideo = () => {
 
     useEffect(() => {
         handleLargeVideoRequest(user_id)
-    }, [])
+    }, [postUsername])
 
     useEffect(()=> {
         handleGetComment(video_id)
     }, [comment, deletedComment])
-
-
-
-
 
 
 
@@ -148,7 +146,7 @@ const Largeuservideo = () => {
 
             <div className="profile-comments-container">
 
-                     <> <Specificvideoheader profile_pic={profile_picture_url} username={username} numComments={totalComms} />
+                     <> <Specificvideoheader profile_pic={profile_picture_url} username={username} numComments={totalComms} numLikes={likes} />
                </>
                 {comment? (
                 <div className="comment-wrapper">
@@ -162,7 +160,7 @@ const Largeuservideo = () => {
                                      time={i?.time_stamp}
                             />
                             <div className="comment-options-container">
-                                <AiOutlineEllipsis className="comment-options-icon-delete" onClick={event => handleDeleteComment(video_id, i.comment_id)}/>
+                                <AiOutlineEllipsis className="comment-options-icon-delete" onClick={event => handleDeleteComment(video_id, i.comment_id, user_id)}/>
                                 <AiOutlineHeart className="comment-options-icon" onClick={event => handleLikeComment(video_id, i.comment_id)}/>
                                 <p className="num-likes">
                                     {i.likes}

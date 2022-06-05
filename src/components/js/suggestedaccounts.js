@@ -17,10 +17,17 @@ const Suggestedaccounts = () => {
         }
 
     }
+    const getFollowedUsers = async () => {
+      try {
+
+      } catch (error) {
+          console.log(error)
+      }
+    }
 
     useEffect( () => {
         getAccounts()
-    }, [items])
+    }, [])
     const accounts = items
 
     if (!(accounts == null)) {
